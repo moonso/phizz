@@ -1,0 +1,7 @@
+-r ../requirements.txt
+
+coverage
+coveralls
+pytest
+pytest-cov
+wheel>=0.23.0
