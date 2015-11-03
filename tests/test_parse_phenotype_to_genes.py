@@ -1,4 +1,8 @@
-from query_hpo import parse_phenotype_to_genes
+from query_hpo.log import configure_stream
+
+configure_stream(level="DEBUG")
+
+from query_hpo.utils import parse_phenotype_to_genes
 
 LINES = [
     "#Format: HPO-ID<tab>HPO-Name<tab>Gene-ID<tab>Gene-Name",
@@ -29,7 +33,10 @@ HPO_DICT = parse_phenotype_to_genes(LINES)
 def test_first_term():
     """docstring for test_parse_lines"""
     
-    assert len(HPO_DICT[1459]['genes']) == 1
+    entry = HPO_DICT[1459]
+    assert len(entry['genes']) == 1
+    assert entry['name'] == "HP:0001459"
+    assert entry['description'] == "1-3 toe syndactyly"
 
 def test_multiple_term():
     """docstring for test_parse_lines"""

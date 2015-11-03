@@ -6,3 +6,4 @@
 -r requirements/conda.txt
 
 click
+configobj

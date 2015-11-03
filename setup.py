@@ -81,11 +81,11 @@ setup(
     # "scripts" keyword. Entry points provide cross-platform support and
     # allow pip to create the appropriate form of executable for the
     # target platform.
-    # entry_points=dict(
-    #     console_scripts=[
-    #         'puzzle = puzzle.__main__:cli',
-    #     ],
-    # ),
+    entry_points=dict(
+        console_scripts=[
+            'query_hpo = query_hpo.__main__:cli',
+        ],
+    ),
 
     # See: http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
