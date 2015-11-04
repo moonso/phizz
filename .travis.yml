@@ -11,7 +11,7 @@ install:
 
 script:
     # command to run tests and collect test coverage
-    - py.test tests/
+    - py.test
 
 notifications:
     email: false
