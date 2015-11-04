@@ -3,7 +3,7 @@ import gzip
 
 from codecs import getreader
 
-from query_hpo.utils import (parse_phenotype_to_genes, parse_disease_to_hpo)
+from phizz.utils import (parse_phenotype_to_genes, parse_disease_to_hpo)
 
 from .constants import (disease_to_genes_path, phenotype_to_genes_path, 
 schema_path)

@@ -6,8 +6,8 @@ query_hpo.__main__
 
 The main entry point for the command line interface.
 
-Invoke as ``query_hpo`` (if installed)
-or ``python -m query_hpo`` (no install required).
+Invoke as ``phizz`` (if installed)
+or ``python -m phizz`` (no install required).
 """
 import sys
 

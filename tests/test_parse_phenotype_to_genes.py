@@ -1,8 +1,8 @@
-from query_hpo.log import configure_stream
+from phizz.log import configure_stream
 
 configure_stream(level="DEBUG")
 
-from query_hpo.utils import parse_phenotype_to_genes
+from phizz.utils import parse_phenotype_to_genes
 
 LINES = [
     "#Format: HPO-ID<tab>HPO-Name<tab>Gene-ID<tab>Gene-Name",

@@ -1,6 +1,6 @@
 import sqlite3
-from query_hpo.database import populate_hpo, populate_disease
-from query_hpo.log import configure_stream
+from phizz.database import populate_hpo, populate_disease
+from phizz.log import configure_stream
 
 configure_stream(level="DEBUG")
 

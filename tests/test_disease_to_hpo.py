@@ -1,4 +1,4 @@
-from query_hpo.utils import parse_disease_to_hpo
+from phizz.utils import parse_disease_to_hpo
 
 LINES = [
     "#Format: diseaseId<tab>gene-symbol<tab>gene-id(entrez)<tab>HPO-ID<tab>HPO-term-name",

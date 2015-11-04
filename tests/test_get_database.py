@@ -1,4 +1,4 @@
-from query_hpo.database import get_database
+from phizz.database import get_database
 import pytest
 
 SCHEMA = 'tests/fixtures/schema.sql'

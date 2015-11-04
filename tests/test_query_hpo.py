@@ -1,4 +1,4 @@
-from query_hpo.utils import query_hpo
+from phizz.utils import query_hpo
 import pytest
 
 def test_query_term():

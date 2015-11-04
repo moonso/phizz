@@ -47,17 +47,17 @@ def parse_readme():
 
 
 setup(
-    name='query_hpo',
+    name='phizz',
 
     # Versions should comply with PEP440. For a discussion on
     # single-sourcing the version across setup.py and the project code,
     # see http://packaging.python.org/en/latest/tutorial.html#version
     version='0.0.1',
 
-    description='Tool to query hpo database',
+    description='Tool to query hpo database and some other sources',
     long_description=parse_readme(),
     # What does your project relate to? Separate with spaces.
-    keywords='hpo',
+    keywords='hpo omim hgnc',
     author='Måns Magnusson',
     author_email='mans.magnusson@scilifelab.com',
     license='MIT',
@@ -83,7 +83,7 @@ setup(
     # target platform.
     entry_points=dict(
         console_scripts=[
-            'query_hpo = query_hpo.__main__:cli',
+            'phizz = phizz.__main__:cli',
         ],
     ),
 

@@ -4,7 +4,7 @@ import logging
 
 import click
 
-from .constants import hpo_db
+from .constants import phizz_db
 logger = logging.getLogger(__name__)
 
 def get_database(path_to_database = None, database_schema = None):
@@ -21,7 +21,7 @@ def get_database(path_to_database = None, database_schema = None):
             conn (sqlite3.connect): A database connection object
     """
     if not path_to_database:
-        path_to_database = hpo_db
+        path_to_database = phizz_db
     
     db_is_new = not os.path.exists(path_to_database)
 
