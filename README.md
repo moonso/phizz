@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/moonso/phizz.svg)](https://travis-ci.org/moonso/phizz)
+
 # phizz #
 
 Tool to query HPO and OMIM
