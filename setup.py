@@ -70,7 +70,7 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     include_package_data=True,
-    package_data=dict(phizz=['resources/*'])
+    package_data=dict(phizz=['resources/*']),
     zip_safe=False,
 
     # Install requirements loaded from ``requirements.txt``
