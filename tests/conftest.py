@@ -77,16 +77,16 @@ def hpo_terms(request):
 def genes(request):
     """Get hpo terms"""
     gene_lines = [
-       "#Chrom\tStart\tEnd\tENSGID\tDescription\tHGNC_symbol",
-       "13\t23551994\t23552136\tENSG00000223116\t\t",
-       "13\t23708313\t23708703\tENSG00000233440\thigh mobility group AT-hook"\
-       " 1 pseudogene 6 [Source:HGNC Symbol;Acc:19121]\tHMGA1P6",
-       "13\t23726725\t23726825\tENSG00000207157\tRNA, Ro-associated Y3"\
-       " pseudogene 4 [Source:HGNC Symbol;Acc:42488]\tRNY3P4",
-       "13\t23743974\t23744736\tENSG00000229483\tlong intergenic non-protein"\
-       " coding RNA 362 [Source:HGNC Symbol;Acc:42682]\tLINC00362",
-       "13\t23791571\t23791673\tENSG00000252952\tRNA, U6 small nuclear 58,"\
-       " pseudogene [Source:HGNC Symbol;Acc:42548]\tRNU6-58P",
+        "#chrom\tstart\tstop\tensembl_id\tdescription\thgnc_symbol\thi_score\t"\
+        "constraint_score",
+        "2\t203044020\t203044694\tENSG00000227890\tproteasome (prosome,"\
+        " macropain) subunit, alpha type, 2 pseudogene 3\tPSMA2P3\t\t",
+        "11\t87040449\t87041094\tENSG00000254582\tproteasome (prosome,"\
+        " macropain) subunit, alpha type, 2 pseudogene 1\tPSMA2P1\t\t",
+        "5\t149737202\t149779871\tENSG00000070814\tTreacher Collins-"\
+        "Franceschetti syndrome 1\tTCOF1\t0.202\t4.98430839027322",
+        "17\t28442539\t28513493\tENSG00000126653\tnuclear speckle splicing"\
+        " regulatory protein 1\tNSRP1\t\t2.9732792450519",
     ]
     return parse_genes(gene_lines)
 

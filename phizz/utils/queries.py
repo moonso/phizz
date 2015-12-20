@@ -1,10 +1,10 @@
 import logging
 import sqlite3
-from phizz.database import get_database
+from phizz.database import get_cursor
 
 logger = logging.getLogger(__name__)
 
-def query_hpo(hpo_terms, database=None):
+def query_hpo(hpo_terms, database=None, connection=None):
     """Query with hpo terms
     
         If no databse is given use the one that follows with package
@@ -19,11 +19,10 @@ def query_hpo(hpo_terms, database=None):
             'description':<description>}
             
     """
-    connection = get_database(path_to_database=database)
-    
-    connection.row_factory = sqlite3.Row
-    
-    cursor = connection.cursor()
+    cursor = get_cursor(
+        path_to_database=database, 
+        connection=connection
+    )
     
     answer = []
     
@@ -45,7 +44,7 @@ def query_hpo(hpo_terms, database=None):
     
     return answer
 
-def query_disease(disease_terms, database=None):
+def query_disease(disease_terms, database=None, connection=None):
     """Query with diseae terms
     
         If no databse is given use the one that follows with package
@@ -60,35 +59,31 @@ def query_disease(disease_terms, database=None):
             'description':<description>}
             
     """
-    connection = get_database(path_to_database=database)
+    cursor = get_cursor(
+        path_to_database=database, 
+        connection=connection
+    )
     
-    connection.row_factory = sqlite3.Row
-    
-    cursor = connection.cursor()
-    cursor2 = connection.cursor()
     answer = []
     
     for disease_term in disease_terms:
         try:
             disease_term = int(disease_term.lstrip('OMIM:'))
+            logger.info("Querying diseases with {0}".format(disease_term))
         except ValueError as e:
             logger.error("{0} is not a valid OMIM term".format(disease_term))
             raise e
             
-        disease_result = cursor.execute("SELECT * FROM disease WHERE"\
-                            " mim_nr = '{0}'".format(disease_term)).fetchall()
+        result = cursor.execute("SELECT hpo.name, hpo.description"\
+                                " FROM hpo, disease WHERE"\
+                                " hpo.hpo_id = disease.mim_hpo"\
+                                " AND disease.mim_nr = ?", (str(disease_term),)).fetchall()
         
-        for row in disease_result:
-            disease_hpo = row['mim_hpo']
-            
-            hpo_result = cursor.execute("SELECT * FROM hpo"\
-                            " WHERE hpo_id = '{0}'".format(disease_hpo)).fetchall()
-            
-            for hpo_row in hpo_result:
-                answer.append({
-                    'hpo_term': hpo_row['name'],
-                    'description': hpo_row['description']
-                })
+        for hpo_row in result:
+            answer.append({
+                'hpo_term': hpo_row['name'],
+                'description': hpo_row['description']
+            })
     
     return answer
     

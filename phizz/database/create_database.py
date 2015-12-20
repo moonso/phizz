@@ -44,3 +44,14 @@ def get_database(path_to_database = None, database_schema = None):
         conn = sqlite3.connect(path_to_database)
     
     return conn
+
+def get_cursor(path_to_database=None, connection=None):
+    """Get a cursor for querying the database"""
+    if not connection:
+        connection = get_database(path_to_database)
+    
+    connection.row_factory = sqlite3.Row
+    cursor = connection.cursor()
+    
+    return cursor
+    

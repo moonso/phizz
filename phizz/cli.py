@@ -62,6 +62,28 @@ def init(ctx, db_name, path):
     
     build_database(conn)
 
+@cli.command()
+@click.option('--db_name', 
+            default=phizz_db,
+            type=click.Path()
+            )
+##TODO database should be somewhere else
+@click.option('--path', default=os.path.abspath("./"))
+@click.pass_context
+def delete(ctx, db_name, path):
+    """Delete the database."""
+    
+    if not os.path.exists(db_name):
+        logger.error("Databse {0} does not exist".format(db_name))
+        sys.exit(1)
+    
+    logger.info("Deleting database {0}".format(db_name))
+    
+    os.remove(db_name)
+    
+    logger.info("Database {0} deleted".format(db_name))
+    
+
 
 @cli.command()
 @click.option('-c', '--config',
