@@ -86,4 +86,39 @@ def query_disease(disease_terms, database=None, connection=None):
             })
     
     return answer
+
+def query_gene(ensembl_id=None, hgnc_symbol=None, database=None, connection=None):
+    """Query with gene symbols, either hgnc or ensembl
+    
+        If no database is given use the one that follows with package
+        
+        Args:
+            ensemb_id (str): A ensembl gene id
+            hgnc_symbol (str): A hgnc symbol
+            database (str): Path to database
+        
+        Returns:
+            answer (iterator)
+            
+    """
+    cursor = get_cursor(
+        path_to_database=database, 
+        connection=connection
+    )
+    
+    result = []
+    
+    if not (ensembl_id or hgnc_symbol):
+        raise SyntaxError("Use gene identifier to query")
+    if ensembl_id:
+        if not ensembl_id.startswith("ENSG"):
+            raise ValueError("invalid format for ensemb id")
+        
+        result = cursor.execute("SELECT * FROM gene WHERE"\
+                                " ensembl_id = ?" , (ensembl_id,)).fetchall()
+    else:
+        result = cursor.execute("SELECT * FROM gene WHERE"\
+                                " hgnc_symbol = ?" , (hgnc_symbol,)).fetchall()
+    print(result)
+    return result
     

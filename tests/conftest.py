@@ -1,6 +1,7 @@
 import sqlite3
 import pytest
-from phizz.database import (populate_hpo, populate_disease, get_database)
+from phizz.database import (populate_hpo, populate_disease, populate_genes, 
+                            get_database)
 from phizz.utils import (parse_phenotypes, parse_diseases, parse_genes)
 
 from phizz.log import configure_stream
@@ -106,7 +107,7 @@ def connection(request):
 
 
 @pytest.fixture(scope='function')
-def database(request, connection, hpo_terms, mim_terms):
+def database(request, connection, hpo_terms, mim_terms, genes):
     """Return a populated database"""
     
     populate_hpo(
@@ -117,7 +118,12 @@ def database(request, connection, hpo_terms, mim_terms):
     populate_disease(
         connection=connection, 
         disease_terms=mim_terms
-        
     )    
+
+    populate_genes(
+        connection=connection, 
+        genes=genes
+    )    
+
     return connection
     
