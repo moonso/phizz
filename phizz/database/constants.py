@@ -12,6 +12,10 @@ phenotypes_path = pkg_resources.resource_filename(
     resource_package,
     "resources/phenotypes.txt.gz"
 )
+genes_path = pkg_resources.resource_filename(
+    resource_package,
+    "resources/genes_37.txt.gz"
+)
 schema_path = pkg_resources.resource_filename(
     resource_package,
     "resources/schema.sql"
