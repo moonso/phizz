@@ -1,4 +1,6 @@
 from phizz.database import get_database
+from phizz.database import populate_hpo, populate_disease
+
 import pytest
 
 SCHEMA = 'tests/fixtures/schema.sql'
