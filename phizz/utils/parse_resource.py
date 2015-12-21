@@ -76,7 +76,8 @@ def parse_genes(lines):
     """Parse an ensembl file with genes
         
         Header should look like: 
-        #chrom\tstart\tstop\tensembl_id\tdescription\thgnc_symbol\thi_score\t
+        #chrom\tstart\tstop\tensembl_id\tdescription\thgnc_symbol
+        \thgnc_id\thi_score\t
          constraint_score
         
         Args:

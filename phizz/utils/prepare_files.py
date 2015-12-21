@@ -70,7 +70,7 @@ def get_constraint_scores(lines):
             line = line.rstrip().split('\t')
             info = line[3].split('|')
             hgnc_id = line[1]
-            constraint_score = line[-2]
+            constraint_score = line[-1]
             
             yield (hgnc_id, constraint_score)
 
@@ -97,8 +97,10 @@ def parse_ensembl_header(line):
             position_info['geneid'] = i
         elif 'Description' in info:
             position_info['description'] = i
-        elif 'HGNC' in info:
+        elif 'HGNC symbol' in info:
             position_info['hgnc_symbol'] = i
+        elif 'HGNC ID' in info:
+            position_info['hgnc_id'] = i
             
     return position_info
 
@@ -150,6 +152,12 @@ def parse_ensembl_genes(lines):
                 if len(line) > desc_pos:
                     description = line[desc_pos].split('[')
                     gene_info['description'] = description[0]
+
+            hgnc_id_pos = position_info.get('hgnc_id')            
+            if hgnc_id_pos != None:
+                if len(line) > hgnc_id_pos:
+                    hgnc_id = line[hgnc_id_pos]
+                    gene_info['hgnc_id'] = hgnc_id
 
             hgnc_pos = position_info.get('hgnc_symbol')            
             hgnc_symbol = None
@@ -257,22 +265,23 @@ def cli(infile, mode, hi_scores, constraint_scores, outfile):
                 genes[hgnc_id]['constraint_score'] = constraint_score
     
     header = "#chrom\tstart\tstop\tensembl_id\tdescription\thgnc_symbol\t"\
-             "hi_score\tconstraint_score"
+             "hgnc_id\thi_score\tconstraint_score"
     if outfile:
         out_handle.write(header + '\n')
     else:
         print(header)
 
-    for hgnc_id in genes:
-        if hgnc_id != 'unknown':
-            gene_info = genes[hgnc_id]
-            print_line = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(
+    for hgnc_symbol in genes:
+        if hgnc_symbol != 'unknown':
+            gene_info = genes[hgnc_symbol]
+            print_line = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}".format(
                 gene_info.get('chrom', 'unknown'),
                 gene_info.get('start', '0'),
                 gene_info.get('stop', '0'),
                 gene_info.get('ensembl_id', 'unknown'),
                 gene_info.get('description', ''),
-                hgnc_id,
+                hgnc_symbol,
+                gene_info.get('hgnc_id', ''),
                 gene_info.get('hi_score', ''),
                 gene_info.get('constraint_score', ''),
             )
@@ -283,12 +292,13 @@ def cli(infile, mode, hi_scores, constraint_scores, outfile):
 
     unknown_genes = genes['unknown']
     for gene_info in unknown_genes:
-        print_line = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}".format(
+        print_line = "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}".format(
             gene_info.get('chrom', 'unknown'),
             gene_info.get('start', '0'),
             gene_info.get('stop', '0'),
             gene_info.get('ensembl_id', 'unknown'),
             gene_info.get('description', ''),
+            '',
             '',
             '',
             ''

@@ -71,6 +71,7 @@ def populate_genes(connection, genes):
         i += 1
         ensembl_id = entry['ensembl_id']
         hgnc_symbol = entry.get('hgnc_symbol')
+        hgnc_id = entry.get('hgnc_id')
         description = entry.get('description')
         chrom = entry['chrom']
         start = int(entry['start'])
@@ -85,9 +86,9 @@ def populate_genes(connection, genes):
         logger.debug("Inserting gene: {0} into gene table".format(ensembl_id))
         
         connection.execute("INSERT INTO gene (gene_id, ensembl_id, hgnc_symbol"\
-                           ", description, chrom, start, stop, hi_score,"\
-                           " constraint_score) values (?,?,?,?,?,?,?,?,?)", 
-                           (i, ensembl_id, hgnc_symbol, description, chrom, 
+                           ", hgnc_id, description, chrom, start, stop, hi_score,"\
+                           " constraint_score) values (?,?,?,?,?,?,?,?,?,?)", 
+                           (i, ensembl_id, hgnc_symbol, hgnc_id, description, chrom, 
                            start, stop, hi_score, constraint_score))
         
     connection.commit()

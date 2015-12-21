@@ -16,6 +16,7 @@ create table gene (
     gene_id         integer primary key,
     ensembl_id      text not null,
     hgnc_symbol     text,
+    hgnc_id     integer,
     description     text,
     chrom           text not null,
     start           integer not null,
