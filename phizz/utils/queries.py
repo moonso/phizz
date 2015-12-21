@@ -69,7 +69,7 @@ def query_disease(disease_terms, database=None, connection=None):
     for disease_term in disease_terms:
         try:
             disease_term = int(disease_term.lstrip('OMIM:'))
-            logger.info("Querying diseases with {0}".format(disease_term))
+            logger.debug("Querying diseases with {0}".format(disease_term))
         except ValueError as e:
             logger.error("{0} is not a valid OMIM term".format(disease_term))
             raise e
@@ -113,12 +113,13 @@ def query_gene(ensembl_id=None, hgnc_symbol=None, database=None, connection=None
     if ensembl_id:
         if not ensembl_id.startswith("ENSG"):
             raise ValueError("invalid format for ensemb id")
+        logger.debug("Querying genes with ensembl id {0}".format(ensembl_id))
         
         result = cursor.execute("SELECT * FROM gene WHERE"\
                                 " ensembl_id = ?" , (ensembl_id,)).fetchall()
     else:
+        logger.debug("Querying genes with hgnc symbol {0}".format(hgnc_symbol))
         result = cursor.execute("SELECT * FROM gene WHERE"\
                                 " hgnc_symbol = ?" , (hgnc_symbol,)).fetchall()
-    print(result)
     return result
     

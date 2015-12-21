@@ -52,7 +52,7 @@ setup(
     # Versions should comply with PEP440. For a discussion on
     # single-sourcing the version across setup.py and the project code,
     # see http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.1.1',
+    version='0.1.2',
 
     description='Tool to query hpo database and some other sources',
     long_description=parse_readme(),

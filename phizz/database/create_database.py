@@ -40,7 +40,7 @@ def get_database(path_to_database = None, database_schema = None):
         logger.debug("Database created")
         
     else:
-        logger.info("Found database {0}".format(path_to_database))
+        logger.debug("Found database {0}".format(path_to_database))
         conn = sqlite3.connect(path_to_database)
     
     return conn
