@@ -13,4 +13,4 @@ recursive-exclude * *.py[co]
 
 include phizz/resources/phizz.db
 include phizz/resources/schema.sql
-include phizz/resources/gene_tree.db
+include phizz/resources/genes.db
