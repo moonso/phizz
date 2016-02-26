@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 from phizz.database import get_cursor
+from . import GENE_DB
 
 logger = logging.getLogger(__name__)
 
@@ -122,4 +123,31 @@ def query_gene(ensembl_id=None, hgnc_symbol=None, database=None, connection=None
         result = cursor.execute("SELECT * FROM gene WHERE"\
                                 " hgnc_symbol = ?" , (hgnc_symbol,)).fetchall()
     return result
+
+def query_gene_symbol(chrom, start, stop):
+    """Query the gene trees with an interval and return the gene symbols overlapped
+    
+    Args:
+        chrom(str)
+        start(int)
+        stop(int)
+    
+    Returns:
+        gene_symbols(list(str))
+    """
+    logger.info("Querying gene trees with chrom: {0}, start:{1}, stop{2}".format(
+        chrom, start, stop
+    ))
+    chrom = chrom.rstrip('chrCHR')
+    interval = [int(start), int(stop)]
+    
+    gene_symbols = set()
+    
+    try:
+        gene_tree = GENE_DB[chrom]
+        gene_symbols = gene_tree.find_range(interval)
+    except KeyError:
+        logger.warning("Chromosome {0} is not in annotation file".format(chrom))
+    
+    return gene_symbols
     

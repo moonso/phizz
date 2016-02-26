@@ -11,4 +11,6 @@ recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
-recursive-include phizz/resources *
+include phizz/resources/phizz.db
+include phizz/resources/schema.sql
+include phizz/resources/gene_tree.db

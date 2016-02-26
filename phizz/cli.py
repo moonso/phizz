@@ -4,15 +4,16 @@ import os
 import logging
 import gzip
 import json
-from codecs import open
 
 import click
+
+from codecs import open
 
 from configobj import ConfigObj
 
 from phizz.database import (get_database, build_database)
 from phizz.database.constants import (config_file, schema_path, phizz_db)
-from phizz.utils import (query_hpo, query_disease)
+from phizz.utils import (query_hpo, query_disease, build_gene_trees, query_gene_symbol)
 from phizz import __version__
 
 from .log import configure_stream, LEVELS
@@ -63,6 +64,28 @@ def init(ctx, db_name, path):
     build_database(conn)
 
 @cli.command()
+@click.argument('gene_file',
+    type=click.Path(exists=True)
+)
+@click.option('--db_name', default="genes.db")
+##TODO database should be somewhere else
+@click.option('--path', default=os.path.abspath("./"))
+@click.pass_context
+def build_genes(ctx, gene_file, db_name, path):
+    """Create a gene database."""
+    database = db_name
+    
+    if os.path.exists(database):
+        logger.error("Databse already exists in {0}".format(database))
+        sys.exit(1)
+    
+    logger.info("Set database to {0}".format(database))
+    gene_db = os.path.join(path, db_name)
+    
+    gene_trees = build_gene_trees(gene_file, genes_db)
+    
+
+@cli.command()
 @click.option('--db_name', 
             default=phizz_db,
             type=click.Path()
@@ -105,13 +128,23 @@ def delete(ctx, db_name, path):
     is_flag=True,
     help="If output should be in json format"
 )
+@click.option('--chrom',
+    help="The chromosome",
+    type=str
+)
+@click.option('--start',
+    type=int,
+)
+@click.option('--stop',
+    type=int,
+)
 @click.pass_context
-def query(ctx, config, hpo_term, mim_term, outfile, to_json):
+def query(ctx, config, hpo_term, mim_term, outfile, to_json, chrom, start, stop):
     """Query the hpo database.\n
     
         Print the result in csv format as default.
     """
-    if not (hpo_term or mim_term):
+    if not (hpo_term or mim_term or chrom):
         logger.error("Please provide at least one hpo- or mim term")
         logger.info("Exiting")
         sys.exit(1)
@@ -125,6 +158,11 @@ def query(ctx, config, hpo_term, mim_term, outfile, to_json):
     
     header = "#{0}\t{1}".format('hpo_id', 'description')
     results = []
+    
+    if chrom and start and stop:
+        for hgnc_symbol in query_gene_symbol(chrom, start, stop):
+            results.append(hgnc_symbol)
+        header = "#hgnc_symbol"
     
     if hpo_term:
         try:
@@ -155,8 +193,11 @@ def query(ctx, config, hpo_term, mim_term, outfile, to_json):
             print(header)
         
         for result in results:
-            print_line = "{0}\t{1}".format(
-                result['hpo_term'], result['description'])
+            if chrom:
+                print_line = result
+            else:
+                print_line = "{0}\t{1}".format(
+                    result['hpo_term'], result['description'])
             if outfile:
                 outfile.write(print_line+'\n')
             else:
