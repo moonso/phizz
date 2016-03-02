@@ -82,7 +82,7 @@ def build_genes(ctx, gene_file, db_name, path):
     logger.info("Set database to {0}".format(database))
     gene_db = os.path.join(path, db_name)
     
-    gene_trees = build_gene_trees(gene_file, genes_db)
+    gene_trees = build_gene_trees(gene_file, gene_db)
     
 
 @cli.command()

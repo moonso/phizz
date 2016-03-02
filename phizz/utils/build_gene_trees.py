@@ -1,10 +1,13 @@
 import gzip
+import logging
 try:
     import cPickle as pickle
 except:
     import pickle
 
 from interval_tree import IntervalTree
+
+logger = logging.getLogger(__name__)
 
 def build_gene_trees(infile, gene_db):
     """Build gene trees from the gene file"""
@@ -37,7 +40,7 @@ def build_gene_trees(infile, gene_db):
     for chromosome in gene_trees:
         for gene_symbol in gene_trees[chromosome]:
             start = gene_trees[chromosome][gene_symbol][0]
-            start = gene_trees[chromosome][gene_symbol][1]
+            stop = gene_trees[chromosome][gene_symbol][1]
             interval = [start, stop, gene_symbol]
             if chromosome in interval_trees:
                 interval_trees[chromosome].append(interval)
@@ -50,7 +53,6 @@ def build_gene_trees(infile, gene_db):
             interval_trees[chrom], 
             1, 
             chromosome_stops[chrom]
-            
         )
     
     with open(gene_db, 'wb') as f:
